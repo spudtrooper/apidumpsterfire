@@ -22,3 +22,11 @@ https://api-dumpster-fire.herokuapp.com/
 ```
 ./scripts/frontend_local.sh
 ```
+
+### Deploy
+
+Will only work for me
+
+```
+./scripts/deploy.sh
+```
