@@ -23,9 +23,6 @@ func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableCl
 
 	mux := http.NewServeMux()
 
-	// TODO: Currently doesn't work because we don't copy the source correctly. So disable.
-	const sourceLinks = false
-
 	var secs []handler.Section
 	{
 		sec, err := handler.AddSection(ctx, mux,
@@ -33,10 +30,8 @@ func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableCl
 			"resy",
 			"unofficial resy API",
 			handler.AddSectionFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/resy">github.com/spudtrooper/resy</a>`),
-			handler.AddSectionSourceLinks(sourceLinks),
-			handler.AddSectionHandlersFilesRoot("../resy/"),
-			handler.AddSectionHandlersFiles([]string{"../resy/handlers/handlers.go"}),
-			handler.AddSectionSourceLinkURIRoot("github.com/spudtrooper/resy/blob/main"),
+			handler.AddSectionSourceLinks(true),
+			handler.AddSectionSerializedSourceLocations(resyhandlers.SourceLocations),
 		)
 		if err != nil {
 			return err
@@ -50,10 +45,8 @@ func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableCl
 			"opentable",
 			"unofficial opentable API",
 			handler.AddSectionFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/opentable">github.com/spudtrooper/opentable</a>`),
-			handler.AddSectionSourceLinks(sourceLinks),
-			handler.AddSectionHandlersFilesRoot("../opentable/"),
-			handler.AddSectionHandlersFiles([]string{"../opentable/handlers/handlers.go"}),
-			handler.AddSectionSourceLinkURIRoot("github.com/spudtrooper/opentable/blob/main"),
+			handler.AddSectionSourceLinks(true),
+			handler.AddSectionSerializedSourceLocations(opentablehandlers.SourceLocations),
 		)
 		if err != nil {
 			return err
