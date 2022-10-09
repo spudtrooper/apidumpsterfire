@@ -1,6 +1,8 @@
-# apidumpsterfire
+# API Dumpster Fire
 
-This is an example of composable APIs using [github.com/spudtrooper/minimalcli](https://github.com/spudtrooper/minimalcli). The result is a little server hosting opentable and resy APIs: https://api-dumpster-fire.herokuapp.com/
+This is an example of composable APIs using [github.com/spudtrooper/minimalcli](https://github.com/spudtrooper/minimalcli) to create a little server hosting  unofficial APIs for opentable and resy:
+
+https://api-dumpster-fire.herokuapp.com/
 
 It currently contains unofficial APIs from opentable and resy, each of which has its own little API server:
 
