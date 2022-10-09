@@ -1,6 +1,6 @@
 # apidumpsterfire
 
-This is an example of composable APIs using [minimalcli](https://github.com/spudtrooper/minimalcli).
+This is an example of composable APIs using [github.com/spudtrooper/minimalcli](https://github.com/spudtrooper/minimalcli).
 
 Deployed version: https://api-dumpster-fire.herokuapp.com/
 
