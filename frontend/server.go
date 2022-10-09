@@ -29,7 +29,7 @@ func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableCl
 			resyhandlers.CreateHandlers(resyClient),
 			"resy",
 			"unofficial resy API",
-			handler.AddSectionFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/resy">github.com/spudtrooper/resy</a>`),
+			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/resy">github.com/spudtrooper/resy</a>`),
 			handler.AddSectionSourceLinks(true),
 			handler.AddSectionSerializedSourceLocations(resyhandlers.SourceLocations),
 		)
@@ -44,7 +44,7 @@ func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableCl
 			opentablehandlers.CreateHandlers(opentableClient),
 			"opentable",
 			"unofficial opentable API",
-			handler.AddSectionFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/opentable">github.com/spudtrooper/opentable</a>`),
+			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/opentable">github.com/spudtrooper/opentable</a>`),
 			handler.AddSectionSourceLinks(true),
 			handler.AddSectionSerializedSourceLocations(opentablehandlers.SourceLocations),
 		)
