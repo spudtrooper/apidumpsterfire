@@ -4,7 +4,7 @@ This is an example of composable APIs using [github.com/spudtrooper/minimalcli](
 
 https://api-dumpster-fire.herokuapp.com/
 
-It currently contains unofficial APIs from opentable and resy, each of which has its own little API server:
+It currently contains unofficial APIs from opentable and resy:
 
 | Site                                  | Individual API                                                                            | Project                                                                      |
 | ------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
