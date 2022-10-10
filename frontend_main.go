@@ -10,6 +10,7 @@ import (
 	"github.com/spudtrooper/apidumpsterfire/frontend"
 	"github.com/spudtrooper/goutil/check"
 
+	opensecretsapi "github.com/spudtrooper/opensecrets/api"
 	opentableapi "github.com/spudtrooper/opentable/api"
 	resyapi "github.com/spudtrooper/resy/api"
 )
@@ -41,5 +42,6 @@ func main() {
 
 	resy := resyapi.NewClient("")
 	opentable := opentableapi.FromClient(opentableapi.NewClient(""), opentableapi.EmptyCache())
-	check.Err(frontend.ListenAndServe(ctx, resy, opentable, port, *host))
+	opensecrets := opensecretsapi.NewClient("")
+	check.Err(frontend.ListenAndServe(ctx, resy, opentable, opensecrets, port, *host))
 }

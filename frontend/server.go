@@ -7,13 +7,15 @@ import (
 	"net/http"
 
 	"github.com/spudtrooper/minimalcli/handler"
+	opensecretsapi "github.com/spudtrooper/opensecrets/api"
+	opensecretshandlers "github.com/spudtrooper/opensecrets/handlers"
 	opentableapi "github.com/spudtrooper/opentable/api"
 	opentablehandlers "github.com/spudtrooper/opentable/handlers"
 	resyapi "github.com/spudtrooper/resy/api"
 	resyhandlers "github.com/spudtrooper/resy/handlers"
 )
 
-func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableClient *opentableapi.Extended, port int, host string) error {
+func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableClient *opentableapi.Extended, opensecretsClient *opensecretsapi.Core, port int, host string) error {
 	var hostPort string
 	if host == "localhost" {
 		hostPort = fmt.Sprintf("http://localhost:%d", port)
@@ -47,6 +49,21 @@ func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableCl
 			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/opentable">github.com/spudtrooper/opentable</a>`),
 			handler.AddSectionSourceLinks(true),
 			handler.AddSectionSerializedSourceLocations(opentablehandlers.SourceLocations),
+		)
+		if err != nil {
+			return err
+		}
+		secs = append(secs, *sec)
+	}
+
+	{
+		sec, err := handler.AddSection(ctx, mux,
+			opensecretshandlers.CreateHandlers(opensecretsClient),
+			"opensecrets",
+			"unofficial opensecrets API",
+			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/opensecrets">github.com/spudtrooper/opensecrets</a>`),
+			handler.AddSectionSourceLinks(true),
+			handler.AddSectionSerializedSourceLocations(opensecretshandlers.SourceLocations),
 		)
 		if err != nil {
 			return err
