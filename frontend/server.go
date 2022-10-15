@@ -96,7 +96,14 @@ func ListenAndServe(ctx context.Context,
 
 	if err := handler.GenIndex(ctx, mux, secs,
 		handler.GenIndexTitle("API Dumpster Fire"),
-		handler.GenIndexFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/apidumpsterfire">github.com/spudtrooper/apidumpsterfire</a>`),
+		handler.GenIndexFooterHTML(`<a href="/_all">All</a> | Details: <a target="_" href="//github.com/spudtrooper/apidumpsterfire">github.com/spudtrooper/apidumpsterfire</a>`),
+	); err != nil {
+		return err
+	}
+
+	if err := handler.GenAll(ctx, mux, secs,
+		handler.GenAllTitle("API Dumpster Fire"),
+		handler.GenAllFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/apidumpsterfire">github.com/spudtrooper/apidumpsterfire</a>`),
 	); err != nil {
 		return err
 	}
