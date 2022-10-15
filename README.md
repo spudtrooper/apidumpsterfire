@@ -10,7 +10,8 @@ It currently contains unofficial APIs from opentable and resy:
 | ----------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | [opensecrets.org](http://opensecrets.org) | --                                                                                        | [github.com/spudtrooper/opensecrets](https://github.com/spudtrooper/opensecrets) |
 | [opentable.com](http://opentable.com)     | [unofficial-opentable-api.herokuapp.com](https://unofficial-opentable-api.herokuapp.com/) | [github.com/spudtrooper/opentable](https://github.com/spudtrooper/opentable)     |
-| [resy.com](http://opentable.com)          | [unofficial-resy-api.herokuapp.com](https://unofficial-resy-api.herokuapp.com/)           | [github.com/spudtrooper/resy](https://github.com/spudtrooper/resy)               |
+| [resy.com](http://resy.com)               | [unofficial-resy-api.herokuapp.com](https://unofficial-resy-api.herokuapp.com/)           | [github.com/spudtrooper/resy](https://github.com/spudtrooper/resy)               |
+| [lyft.com](http://lyft.com)               | --                                                                                        | [github.com/spudtrooper/lyft](https://github.com/spudtrooper/lyft)               |
 
 ## Usage
 

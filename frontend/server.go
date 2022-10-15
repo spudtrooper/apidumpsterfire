@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	lyftapi "github.com/spudtrooper/lyft/api"
+	lyfthandlers "github.com/spudtrooper/lyft/handlers"
 	"github.com/spudtrooper/minimalcli/handler"
 	opensecretsapi "github.com/spudtrooper/opensecrets/api"
 	opensecretshandlers "github.com/spudtrooper/opensecrets/handlers"
@@ -15,7 +17,12 @@ import (
 	resyhandlers "github.com/spudtrooper/resy/handlers"
 )
 
-func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableClient *opentableapi.Extended, opensecretsClient *opensecretsapi.Core, port int, host string) error {
+func ListenAndServe(ctx context.Context,
+	resyClient *resyapi.Client,
+	opentableClient *opentableapi.Extended,
+	opensecretsClient *opensecretsapi.Core,
+	lyftClient *lyftapi.Client,
+	port int, host string) error {
 	var hostPort string
 	if host == "localhost" {
 		hostPort = fmt.Sprintf("http://localhost:%d", port)
@@ -26,20 +33,6 @@ func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableCl
 	mux := http.NewServeMux()
 
 	var secs []handler.Section
-	{
-		sec, err := handler.AddSection(ctx, mux,
-			resyhandlers.CreateHandlers(resyClient),
-			"resy",
-			"unofficial resy API",
-			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/resy">github.com/spudtrooper/resy</a>`),
-			handler.AddSectionSourceLinks(true),
-			handler.AddSectionSerializedSourceLocations(resyhandlers.SourceLocations),
-		)
-		if err != nil {
-			return err
-		}
-		secs = append(secs, *sec)
-	}
 
 	{
 		sec, err := handler.AddSection(ctx, mux,
@@ -64,6 +57,36 @@ func ListenAndServe(ctx context.Context, resyClient *resyapi.Client, opentableCl
 			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/opensecrets">github.com/spudtrooper/opensecrets</a>`),
 			handler.AddSectionSourceLinks(true),
 			handler.AddSectionSerializedSourceLocations(opensecretshandlers.SourceLocations),
+		)
+		if err != nil {
+			return err
+		}
+		secs = append(secs, *sec)
+	}
+
+	{
+		sec, err := handler.AddSection(ctx, mux,
+			lyfthandlers.CreateHandlers(lyftClient),
+			"lyft",
+			"unofficial lyft API",
+			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/lyft">github.com/spudtrooper/lyft</a>`),
+			handler.AddSectionSourceLinks(true),
+			handler.AddSectionSerializedSourceLocations(lyfthandlers.SourceLocations),
+		)
+		if err != nil {
+			return err
+		}
+		secs = append(secs, *sec)
+	}
+
+	{
+		sec, err := handler.AddSection(ctx, mux,
+			resyhandlers.CreateHandlers(resyClient),
+			"resy",
+			"unofficial resy API",
+			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/resy">github.com/spudtrooper/resy</a>`),
+			handler.AddSectionSourceLinks(true),
+			handler.AddSectionSerializedSourceLocations(resyhandlers.SourceLocations),
 		)
 		if err != nil {
 			return err
