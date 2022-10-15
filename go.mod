@@ -17,7 +17,7 @@ replace github.com/spudtrooper/lyft => ../lyft
 require (
 	github.com/spudtrooper/goutil v0.1.109
 	github.com/spudtrooper/lyft v0.0.1
-	github.com/spudtrooper/minimalcli v0.0.30
+	github.com/spudtrooper/minimalcli v0.0.31
 	github.com/spudtrooper/opensecrets v0.0.0-00010101000000-000000000000
 	github.com/spudtrooper/opentable v0.0.0-00010101000000-000000000000
 	github.com/spudtrooper/resy v0.0.0-20221009133151-53830c432832
