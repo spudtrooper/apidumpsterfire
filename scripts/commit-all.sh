@@ -13,4 +13,4 @@ for dir in $DIRS; do
   popd
 done
 
-$SCRIPTS/common.sh "$@"
+$SCRIPTS/commit.sh "$@" 
