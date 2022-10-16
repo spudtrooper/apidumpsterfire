@@ -100,6 +100,7 @@ func ListenAndServe(ctx context.Context,
 	}
 
 	if err := handler.GenIndex(ctx, mux, secs,
+		handler.GenIndexRoute("/_short"),
 		handler.GenIndexTitle("API Dumpster Fire"),
 		handler.GenIndexFooterHTML(`<a href="/_all">All</a> | Details: <a target="_" href="//github.com/spudtrooper/apidumpsterfire">github.com/spudtrooper/apidumpsterfire</a>`),
 	); err != nil {
@@ -107,11 +108,14 @@ func ListenAndServe(ctx context.Context,
 	}
 
 	if err := handler.GenAll(ctx, mux, secs,
+		handler.GenAllRoute("/_all"),
 		handler.GenAllTitle("API Dumpster Fire"),
-		handler.GenAllFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/apidumpsterfire">github.com/spudtrooper/apidumpsterfire</a>`),
+		handler.GenAllFooterHTML(`<a href="/_short">Short</a> | Details: <a target="_" href="//github.com/spudtrooper/apidumpsterfire">github.com/spudtrooper/apidumpsterfire</a>`),
 	); err != nil {
 		return err
 	}
+
+	mux.Handle("/", http.RedirectHandler("/_all", http.StatusSeeOther))
 
 	log.Printf("listening on %s", hostPort)
 

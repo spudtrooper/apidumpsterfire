@@ -45,5 +45,6 @@ func main() {
 	opentable := opentableapi.FromClient(opentableapi.NewClient(""), opentableapi.EmptyCache())
 	opensecrets := opensecretsapi.NewClient("")
 	lyft := lyftapi.NewClient("")
+
 	check.Err(frontend.ListenAndServe(ctx, resy, opentable, opensecrets, lyft, port, *host))
 }
