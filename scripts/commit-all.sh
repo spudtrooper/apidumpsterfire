@@ -2,7 +2,6 @@
 #
 # Commits everything.
 #
-set -e
 
 SCRIPTS=$(dirname $0)
 
