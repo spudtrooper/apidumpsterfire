@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DIRS="../lyft ../resy ../opentable ../opensecrets ../minimalcli"
+DIRS="../lyft ../resy ../opentable ../opensecrets ../minimalcli ../uber"
 
 function go_generate() {
   for dir in $DIRS; do

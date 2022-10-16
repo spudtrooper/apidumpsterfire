@@ -15,6 +15,8 @@ import (
 	opentablehandlers "github.com/spudtrooper/opentable/handlers"
 	resyapi "github.com/spudtrooper/resy/api"
 	resyhandlers "github.com/spudtrooper/resy/handlers"
+	uberapi "github.com/spudtrooper/uber/api"
+	uberhandlers "github.com/spudtrooper/uber/handlers"
 )
 
 func ListenAndServe(ctx context.Context,
@@ -22,6 +24,7 @@ func ListenAndServe(ctx context.Context,
 	opentableClient *opentableapi.Extended,
 	opensecretsClient *opensecretsapi.Core,
 	lyftClient *lyftapi.Client,
+	uberClient *uberapi.Client,
 	port int, host string) error {
 	var hostPort string
 	if host == "localhost" {
@@ -92,6 +95,22 @@ func ListenAndServe(ctx context.Context,
 			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/resy">github.com/spudtrooper/resy</a>`),
 			handler.AddSectionSourceLinks(true),
 			handler.AddSectionSerializedSourceLocations(resyhandlers.SourceLocations),
+		)
+		if err != nil {
+			return err
+		}
+		secs = append(secs, *sec)
+	}
+
+	{
+		sec, err := handler.AddSection(ctx, mux,
+			uberhandlers.CreateHandlers(uberClient),
+			"uber",
+			"unofficial uber API",
+			handler.AddSectionKey("uber"),
+			handler.AddSectionFooterHTML(`<a href="/">Home</a> | Details: <a target="_" href="//github.com/spudtrooper/uber">github.com/spudtrooper/uber</a>`),
+			handler.AddSectionSourceLinks(true),
+			handler.AddSectionSerializedSourceLocations(uberhandlers.SourceLocations),
 		)
 		if err != nil {
 			return err
