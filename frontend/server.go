@@ -134,7 +134,7 @@ func ListenAndServe(ctx context.Context,
 		return err
 	}
 
-	mux.Handle("/", http.RedirectHandler("/_all", http.StatusSeeOther))
+	mux.Handle("/", http.RedirectHandler("/_short", http.StatusSeeOther))
 
 	log.Printf("listening on %s", hostPort)
 
