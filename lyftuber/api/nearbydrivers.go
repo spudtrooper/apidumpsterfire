@@ -61,8 +61,8 @@ func (c *Client) NearbyDrivers(lyftToken string, uberCSID string, uberSID string
 	{
 		v, err := c.lyftClient.NearbyDrivers(
 			lyftapi.NearbyDriversToken(lyftToken),
-			lyftapi.NearbyDriversDestinationLatitudeE6(int(opts.Latitude()/100.0)),
-			lyftapi.NearbyDriversDestinationLongitudeE6(int(opts.Longitude()/100.0)),
+			lyftapi.NearbyDriversDestinationLatitudeE6(int(opts.Latitude()*1e6)),
+			lyftapi.NearbyDriversDestinationLongitudeE6(int(opts.Longitude()*1e6)),
 		)
 		if err != nil {
 			return nil, err
