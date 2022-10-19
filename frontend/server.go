@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	lyftuberapi "github.com/spudtrooper/apidumpsterfire/lyftuber/api"
+	lyftuberhandlers "github.com/spudtrooper/apidumpsterfire/lyftuber/handlers"
 	lyftapi "github.com/spudtrooper/lyft/api"
 	lyfthandlers "github.com/spudtrooper/lyft/handlers"
 	"github.com/spudtrooper/minimalcli/handler"
@@ -25,6 +27,7 @@ func ListenAndServe(ctx context.Context,
 	opensecretsClient *opensecretsapi.Core,
 	lyftClient *lyftapi.Client,
 	uberClient *uberapi.Client,
+	lyftuberClient *lyftuberapi.Client,
 	port int, host string) error {
 	var hostPort string
 	if host == "localhost" {
@@ -79,6 +82,22 @@ func ListenAndServe(ctx context.Context,
 			handler.AddSectionFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/lyft">github.com/spudtrooper/lyft</a>`),
 			handler.AddSectionSourceLinks(true),
 			handler.AddSectionSerializedSourceLocations(lyfthandlers.SourceLocations),
+		)
+		if err != nil {
+			return err
+		}
+		secs = append(secs, *sec)
+	}
+
+	{
+		sec, err := handler.AddSection(ctx, mux,
+			lyftuberhandlers.CreateHandlers(lyftuberClient),
+			"lyftuber",
+			"lyftuber API",
+			handler.AddSectionKey("lyftuber"),
+			handler.AddSectionFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/apidumpsterfire/lyftuber">github.com/spudtrooper/apidumpsterfire/lyftuber</a>`),
+			handler.AddSectionSourceLinks(true),
+			handler.AddSectionSerializedSourceLocations(lyftuberhandlers.SourceLocations),
 		)
 		if err != nil {
 			return err

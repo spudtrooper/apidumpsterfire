@@ -10,6 +10,7 @@ import (
 	"github.com/spudtrooper/apidumpsterfire/frontend"
 	"github.com/spudtrooper/goutil/check"
 
+	lyftuberapi "github.com/spudtrooper/apidumpsterfire/lyftuber/api"
 	lyftapi "github.com/spudtrooper/lyft/api"
 	opensecretsapi "github.com/spudtrooper/opensecrets/api"
 	opentableapi "github.com/spudtrooper/opentable/api"
@@ -47,7 +48,9 @@ func main() {
 	opensecrets := opensecretsapi.NewClient("")
 	lyft := lyftapi.NewClient("")
 	uber := uberapi.NewClient("", "")
+	lyftuber := lyftuberapi.NewClient(lyft, uber)
 
-	check.Err(frontend.ListenAndServe(
-		ctx, resy, opentable, opensecrets, lyft, uber, port, *host))
+	check.Err(frontend.ListenAndServe(ctx,
+		resy, opentable, opensecrets, lyft, uber, lyftuber,
+		port, *host))
 }
