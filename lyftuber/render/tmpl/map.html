@@ -11,11 +11,32 @@
       height: 100%;
     }
 
+    #overlay {
+      z-index: 100000;
+      background-color: #fff;
+      border: 1px solid black;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      padding: 10px;
+      min-width: 100px;
+      min-height: 100px;
+    }
+
+    .num {
+      font-weight: bold;
+    }
+
+    .show {
+      font-style: italic;
+    }
+
     html,
     body {
       height: 100%;
       margin: 0;
       padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
     }
   </style>
   <script>
@@ -52,7 +73,9 @@
           },
           success: function (data) {
             markers.forEach(m => m.setMap(null));
+            let hist = {};
             data.Drivers.forEach(d => {
+              hist[d.type] = (hist[d.type] || 0) + 1;
               const scaledSize = d.type == 'lyft' ?
                 new google.maps.Size(33, 50) :
                 new google.maps.Size(50, 50);
@@ -73,6 +96,13 @@
               });
               markers.push(marker);
             });
+            console.log('hist', hist);
+            for (let n in hist) {
+              $(`#overlay .${n} .num`).text(hist[n]);
+            }
+            $('#overlay .last-update').text(new Date().toLocaleString());
+            $('#overlay .lat').text(map.getCenter().lat());
+            $('#overlay .lng').text(map.getCenter().lng());
             setTimeout(request, sleep);
           }
         });
@@ -84,6 +114,23 @@
 
 <body>
   <div id="map"></div>
+  <div id="overlay">
+    <div class="lyft">
+      Lyft: <span class="num show"></span> drivers
+    </div>
+    <div class="uber">
+      Uber: <span class="num show"></span> drivers
+    </div>
+    <div>
+      Last updated: <span class="last-update show"></span>
+    </div>
+    <div>
+      Lat: <span class="lat show"></span>
+    </div>
+    <div>
+      Lng: <span class="lng show"></span>
+    </div>
+  </div>
   <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCguNA8j3ZOSruM6bVNcimcxNK-nIkWLaY&callback=initMap&v=weekly"
     defer></script>

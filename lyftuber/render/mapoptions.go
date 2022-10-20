@@ -112,7 +112,10 @@ func (m *mapOptionImpl) HasZoom() bool      { return m.has_zoom }
 type MapParams struct {
 	Latitude  float64 `json:"latitude" default:"40.7701286"`
 	Longitude float64 `json:"longitude" default:"-73.9829762"`
+	LyftToken string  `json:"lyft_token" required:"true"`
 	Sleep     int     `json:"sleep" default:"5000"`
+	UberCSID  string  `json:"uber_csid" required:"true"`
+	UberSID   string  `json:"uber_sid" required:"true"`
 	Zoom      int     `json:"zoom" default:"14"`
 }
 
