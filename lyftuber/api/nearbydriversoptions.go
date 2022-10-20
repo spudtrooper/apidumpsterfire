@@ -1,7 +1,11 @@
 // DO NOT EDIT MANUALLY: Generated from https://github.com/spudtrooper/genopts
 package api
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/spudtrooper/goutil/or"
+)
 
 type NearbyDriversOption struct {
 	f func(*nearbyDriversOptionImpl)
@@ -56,17 +60,17 @@ type nearbyDriversOptionImpl struct {
 	has_longitude bool
 }
 
-func (n *nearbyDriversOptionImpl) Latitude() float64  { return n.latitude }
+func (n *nearbyDriversOptionImpl) Latitude() float64  { return or.Float64(n.latitude, 40.7701286) }
 func (n *nearbyDriversOptionImpl) HasLatitude() bool  { return n.has_latitude }
-func (n *nearbyDriversOptionImpl) Longitude() float64 { return n.longitude }
+func (n *nearbyDriversOptionImpl) Longitude() float64 { return or.Float64(n.longitude, -73.9829762) }
 func (n *nearbyDriversOptionImpl) HasLongitude() bool { return n.has_longitude }
 
 type NearbyDriversParams struct {
 	LyftToken string  `json:"lyft_token" required:"true"`
 	UberCSID  string  `json:"uber_csid" required:"true"`
 	UberSID   string  `json:"uber_sid" required:"true"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
+	Latitude  float64 `json:"latitude" default:"40.7701286"`
+	Longitude float64 `json:"longitude" default:"-73.9829762"`
 }
 
 func (o NearbyDriversParams) Options() []NearbyDriversOption {

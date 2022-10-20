@@ -1,6 +1,10 @@
 package api
 
 import (
+	"sync"
+
+	"github.com/spudtrooper/goutil/errors"
+	"github.com/spudtrooper/goutil/parallel"
 	lyftapi "github.com/spudtrooper/lyft/api"
 	uberapi "github.com/spudtrooper/uber/api"
 )
@@ -27,63 +31,100 @@ type NearbyDriversInfo struct {
 func (c *Client) NearbyDrivers(lyftToken string, uberCSID string, uberSID string, optss ...NearbyDriversOption) (*NearbyDriversInfo, error) {
 	opts := MakeNearbyDriversOptions(optss...)
 
+	// var drivers []NearbyDriversInfoDriver
+
+	driversCh := make(chan NearbyDriversInfoDriver)
+	errsCh := make(chan error)
+
+	go func() {
+		var wg sync.WaitGroup
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			v, err := c.uberClient.Status(
+				uberapi.StatusCsid(uberCSID),
+				uberapi.StatusSid(uberSID),
+				uberapi.StatusLatitude(opts.Latitude()),
+				uberapi.StatusLongitude(opts.Longitude()),
+			)
+			if err != nil {
+				errsCh <- err
+				return
+			}
+			vehicleViews, err := v.VehicleViews()
+			if err != nil {
+				errsCh <- err
+				return
+			}
+			for _, vv := range vehicleViews {
+				d := NearbyDriversInfoDriver{
+					Type:      "uber",
+					ID:        vv.ID,
+					Latitude:  vv.Lat,
+					Longitude: vv.Lng,
+					ImageURL:  vv.ImageURL,
+					RootInfo: NearbyDriversInfoRootInfo{
+						Uber: v,
+					},
+				}
+				driversCh <- d
+			}
+		}()
+
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			v, err := c.lyftClient.NearbyDrivers(
+				lyftapi.NearbyDriversToken(lyftToken),
+				lyftapi.NearbyDriversDestinationLatitudeE6(int(opts.Latitude()*1e6)),
+				lyftapi.NearbyDriversDestinationLongitudeE6(int(opts.Longitude()*1e6)),
+			)
+			if err != nil {
+				errsCh <- err
+				return
+			}
+			vehicleViews, err := v.VehicleViews()
+			if err != nil {
+				errsCh <- err
+				return
+			}
+			for _, vv := range vehicleViews {
+				d := NearbyDriversInfoDriver{
+					Type:      "lyft",
+					ID:        vv.ID,
+					Latitude:  vv.Lat,
+					Longitude: vv.Lng,
+					ImageURL:  vv.ImageURL,
+					RootInfo: NearbyDriversInfoRootInfo{
+						Lyft: v,
+					},
+				}
+				driversCh <- d
+			}
+		}()
+		wg.Wait()
+		close(driversCh)
+		close(errsCh)
+	}()
+
 	var drivers []NearbyDriversInfoDriver
-
-	{
-		v, err := c.uberClient.Status(
-			uberapi.StatusCsid(uberCSID),
-			uberapi.StatusSid(uberSID),
-			uberapi.StatusLatitude(opts.Latitude()),
-			uberapi.StatusLongitude(opts.Longitude()),
-		)
-		if err != nil {
-			return nil, err
-		}
-		vehicleViews, err := v.VehicleViews()
-		if err != nil {
-			return nil, err
-		}
-		for _, vv := range vehicleViews {
-			d := NearbyDriversInfoDriver{
-				Type:      "uber",
-				ID:        vv.ID,
-				Latitude:  vv.Lat,
-				Longitude: vv.Lng,
-				ImageURL:  vv.ImageURL,
-				RootInfo: NearbyDriversInfoRootInfo{
-					Uber: v,
-				},
-			}
+	var err error
+	parallel.WaitFor(func() {
+		for d := range driversCh {
 			drivers = append(drivers, d)
 		}
-	}
+	}, func() {
+		b := errors.MakeErrorCollector()
+		for e := range errsCh {
+			b.Add(e)
+		}
+		err = b.Build()
+	})
 
-	{
-		v, err := c.lyftClient.NearbyDrivers(
-			lyftapi.NearbyDriversToken(lyftToken),
-			lyftapi.NearbyDriversDestinationLatitudeE6(int(opts.Latitude()*1e6)),
-			lyftapi.NearbyDriversDestinationLongitudeE6(int(opts.Longitude()*1e6)),
-		)
-		if err != nil {
-			return nil, err
-		}
-		vehicleViews, err := v.VehicleViews()
-		if err != nil {
-			return nil, err
-		}
-		for _, vv := range vehicleViews {
-			d := NearbyDriversInfoDriver{
-				Type:      "lyft",
-				ID:        vv.ID,
-				Latitude:  vv.Lat,
-				Longitude: vv.Lng,
-				ImageURL:  vv.ImageURL,
-				RootInfo: NearbyDriversInfoRootInfo{
-					Lyft: v,
-				},
-			}
-			drivers = append(drivers, d)
-		}
+	if err != nil {
+		return nil, err
 	}
 
 	res := &NearbyDriversInfo{

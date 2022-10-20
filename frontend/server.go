@@ -155,6 +155,8 @@ func ListenAndServe(ctx context.Context,
 
 	mux.Handle("/", http.RedirectHandler("/_short", http.StatusSeeOther))
 
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./frontend/static"))))
+
 	log.Printf("listening on %s", hostPort)
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux); err != nil {
