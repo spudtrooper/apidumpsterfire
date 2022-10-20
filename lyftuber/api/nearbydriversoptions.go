@@ -66,11 +66,11 @@ func (n *nearbyDriversOptionImpl) Longitude() float64 { return or.Float64(n.long
 func (n *nearbyDriversOptionImpl) HasLongitude() bool { return n.has_longitude }
 
 type NearbyDriversParams struct {
+	Latitude  float64 `json:"latitude" default:"40.7701286"`
+	Longitude float64 `json:"longitude" default:"-73.9829762"`
 	LyftToken string  `json:"lyft_token" required:"true"`
 	UberCSID  string  `json:"uber_csid" required:"true"`
 	UberSID   string  `json:"uber_sid" required:"true"`
-	Latitude  float64 `json:"latitude" default:"40.7701286"`
-	Longitude float64 `json:"longitude" default:"-73.9829762"`
 }
 
 func (o NearbyDriversParams) Options() []NearbyDriversOption {

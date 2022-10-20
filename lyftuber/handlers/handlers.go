@@ -26,5 +26,11 @@ func CreateHandlers(client *api.Client) []handler.Handler {
 		handler.NewHandlerRenderer(render.NearbyDrivers),
 	)
 
+	b.NewStaticHandler("Map",
+		render.MapTmpl,
+		render.MapParams{},
+		handler.NewHandlerRendererConfig(handler.RendererConfig{IsFragment: false}),
+	)
+
 	return b.Build()
 }
