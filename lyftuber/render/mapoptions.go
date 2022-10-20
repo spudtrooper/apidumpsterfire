@@ -94,10 +94,10 @@ type mapOptionImpl struct {
 	has_latitude  bool
 	longitude     float64
 	has_longitude bool
-	zoom          int
-	has_zoom      bool
 	sleep         int
 	has_sleep     bool
+	zoom          int
+	has_zoom      bool
 }
 
 func (m *mapOptionImpl) Latitude() float64  { return or.Float64(m.latitude, 40.7701286) }
