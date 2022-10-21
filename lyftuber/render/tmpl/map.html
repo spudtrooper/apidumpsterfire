@@ -45,7 +45,7 @@
       const lat = Number.parseFloat(params.get('latitude') || '40.7701286');
       const lng = Number.parseFloat(params.get('longitude') || '-73.9829762');
       const zoom = Number.parseInt(params.get('zoom') || '14');
-      const sleep = Number.parseInt(params.get('sleep') || '5000');
+      const sleepSecs = Number.parseInt(params.get('sleepSecs') || '0');
       map = new google.maps.Map(document.getElementById("map"), {
         center: {
           lat: lat,
@@ -103,7 +103,9 @@
             $('#overlay .last-update').text(new Date().toLocaleString());
             $('#overlay .lat').text(map.getCenter().lat());
             $('#overlay .lng').text(map.getCenter().lng());
-            setTimeout(request, sleep);
+            if (sleepSecs > 0) {
+              setTimeout(request, sleepSecs*1000);
+            }
           }
         });
       }
