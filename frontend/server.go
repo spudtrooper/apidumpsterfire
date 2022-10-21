@@ -75,7 +75,7 @@ func ListenAndServe(ctx context.Context,
 
 	{
 		sec, err := handler.AddSection(ctx, mux,
-			lyfthandlers.CreateHandlers(lyftClient),
+			lyfthandlers.CreateHandlers("lyft", lyftClient),
 			"lyft",
 			"unofficial lyft API",
 			handler.AddSectionKey("lyft"),
