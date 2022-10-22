@@ -7,7 +7,7 @@ https://api-dumpster-fire.herokuapp.com/
 It currently contains unofficial APIs from opentable and resy:
 
 | Site                                      | Individual Project                                                               |
-| ----------------------------------------- | -------------------------------------------------------------------------------- |  |
+| ----------------------------------------- | -------------------------------------------------------------------------------- |
 | [opensecrets.org](http://opensecrets.org) | [github.com/spudtrooper/opensecrets](https://github.com/spudtrooper/opensecrets) |
 | [opentable.com](http://opentable.com)     | [github.com/spudtrooper/opentable](https://github.com/spudtrooper/opentable)     |
 | [resy.com](http://resy.com)               | [github.com/spudtrooper/resy](https://github.com/spudtrooper/resy)               |
