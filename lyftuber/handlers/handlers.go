@@ -32,5 +32,13 @@ func CreateHandlers(client *api.Client) []handler.Handler {
 		handler.NewHandlerRendererConfig(handler.RendererConfig{IsFragment: false}),
 	)
 
+	b.NewHandler("Fares",
+		func(ctx context.Context, ip any) (any, error) {
+			p := ip.(api.FaresParams)
+			return client.Fares(p.LyftToken, p.UberCSID, p.UberSID, p.Options()...)
+		},
+		api.FaresParams{},
+	)
+
 	return b.Build()
 }

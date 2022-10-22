@@ -19,8 +19,8 @@ type MapOptions interface {
 	HasLatitude() bool
 	Longitude() float64
 	HasLongitude() bool
-	Sleep() int
-	HasSleep() bool
+	SleepSecs() int
+	HasSleepSecs() bool
 	Zoom() int
 	HasZoom() bool
 }
@@ -29,7 +29,7 @@ func MapLatitude(latitude float64) MapOption {
 	return MapOption{func(opts *mapOptionImpl) {
 		opts.has_latitude = true
 		opts.latitude = latitude
-	}, fmt.Sprintf("render.MapLatitude(float64 %+v)}", latitude)}
+	}, fmt.Sprintf("render.MapLatitude(float64 %+v)", latitude)}
 }
 func MapLatitudeFlag(latitude *float64) MapOption {
 	return MapOption{func(opts *mapOptionImpl) {
@@ -38,14 +38,14 @@ func MapLatitudeFlag(latitude *float64) MapOption {
 		}
 		opts.has_latitude = true
 		opts.latitude = *latitude
-	}, fmt.Sprintf("render.MapLatitude(float64 %+v)}", latitude)}
+	}, fmt.Sprintf("render.MapLatitude(float64 %+v)", latitude)}
 }
 
 func MapLongitude(longitude float64) MapOption {
 	return MapOption{func(opts *mapOptionImpl) {
 		opts.has_longitude = true
 		opts.longitude = longitude
-	}, fmt.Sprintf("render.MapLongitude(float64 %+v)}", longitude)}
+	}, fmt.Sprintf("render.MapLongitude(float64 %+v)", longitude)}
 }
 func MapLongitudeFlag(longitude *float64) MapOption {
 	return MapOption{func(opts *mapOptionImpl) {
@@ -54,30 +54,30 @@ func MapLongitudeFlag(longitude *float64) MapOption {
 		}
 		opts.has_longitude = true
 		opts.longitude = *longitude
-	}, fmt.Sprintf("render.MapLongitude(float64 %+v)}", longitude)}
+	}, fmt.Sprintf("render.MapLongitude(float64 %+v)", longitude)}
 }
 
-func MapSleep(sleep int) MapOption {
+func MapSleepSecs(sleepSecs int) MapOption {
 	return MapOption{func(opts *mapOptionImpl) {
-		opts.has_sleep = true
-		opts.sleep = sleep
-	}, fmt.Sprintf("render.MapSleep(int %+v)}", sleep)}
+		opts.has_sleepSecs = true
+		opts.sleepSecs = sleepSecs
+	}, fmt.Sprintf("render.MapSleepSecs(int %+v)", sleepSecs)}
 }
-func MapSleepFlag(sleep *int) MapOption {
+func MapSleepSecsFlag(sleepSecs *int) MapOption {
 	return MapOption{func(opts *mapOptionImpl) {
-		if sleep == nil {
+		if sleepSecs == nil {
 			return
 		}
-		opts.has_sleep = true
-		opts.sleep = *sleep
-	}, fmt.Sprintf("render.MapSleep(int %+v)}", sleep)}
+		opts.has_sleepSecs = true
+		opts.sleepSecs = *sleepSecs
+	}, fmt.Sprintf("render.MapSleepSecs(int %+v)", sleepSecs)}
 }
 
 func MapZoom(zoom int) MapOption {
 	return MapOption{func(opts *mapOptionImpl) {
 		opts.has_zoom = true
 		opts.zoom = zoom
-	}, fmt.Sprintf("render.MapZoom(int %+v)}", zoom)}
+	}, fmt.Sprintf("render.MapZoom(int %+v)", zoom)}
 }
 func MapZoomFlag(zoom *int) MapOption {
 	return MapOption{func(opts *mapOptionImpl) {
@@ -86,7 +86,7 @@ func MapZoomFlag(zoom *int) MapOption {
 		}
 		opts.has_zoom = true
 		opts.zoom = *zoom
-	}, fmt.Sprintf("render.MapZoom(int %+v)}", zoom)}
+	}, fmt.Sprintf("render.MapZoom(int %+v)", zoom)}
 }
 
 type mapOptionImpl struct {
@@ -94,8 +94,8 @@ type mapOptionImpl struct {
 	has_latitude  bool
 	longitude     float64
 	has_longitude bool
-	sleep         int
-	has_sleep     bool
+	sleepSecs     int
+	has_sleepSecs bool
 	zoom          int
 	has_zoom      bool
 }
@@ -104,8 +104,8 @@ func (m *mapOptionImpl) Latitude() float64  { return or.Float64(m.latitude, 40.7
 func (m *mapOptionImpl) HasLatitude() bool  { return m.has_latitude }
 func (m *mapOptionImpl) Longitude() float64 { return or.Float64(m.longitude, -73.9829762) }
 func (m *mapOptionImpl) HasLongitude() bool { return m.has_longitude }
-func (m *mapOptionImpl) Sleep() int         { return or.Int(m.sleep, 5000) }
-func (m *mapOptionImpl) HasSleep() bool     { return m.has_sleep }
+func (m *mapOptionImpl) SleepSecs() int     { return or.Int(m.sleepSecs, 0) }
+func (m *mapOptionImpl) HasSleepSecs() bool { return m.has_sleepSecs }
 func (m *mapOptionImpl) Zoom() int          { return or.Int(m.zoom, 14) }
 func (m *mapOptionImpl) HasZoom() bool      { return m.has_zoom }
 
@@ -113,7 +113,7 @@ type MapParams struct {
 	Latitude  float64 `json:"latitude" default:"40.7701286"`
 	Longitude float64 `json:"longitude" default:"-73.9829762"`
 	LyftToken string  `json:"lyft_token" required:"true"`
-	Sleep     int     `json:"sleep" default:"5000"`
+	SleepSecs int     `json:"sleep_secs" default:"0"`
 	UberCSID  string  `json:"uber_csid" required:"true"`
 	UberSID   string  `json:"uber_sid" required:"true"`
 	Zoom      int     `json:"zoom" default:"14"`
@@ -123,7 +123,7 @@ func (o MapParams) Options() []MapOption {
 	return []MapOption{
 		MapLatitude(o.Latitude),
 		MapLongitude(o.Longitude),
-		MapSleep(o.Sleep),
+		MapSleepSecs(o.SleepSecs),
 		MapZoom(o.Zoom),
 	}
 }

@@ -25,7 +25,7 @@ func NearbyDriversLatitude(latitude float64) NearbyDriversOption {
 	return NearbyDriversOption{func(opts *nearbyDriversOptionImpl) {
 		opts.has_latitude = true
 		opts.latitude = latitude
-	}, fmt.Sprintf("api.NearbyDriversLatitude(float64 %+v)}", latitude)}
+	}, fmt.Sprintf("api.NearbyDriversLatitude(float64 %+v)", latitude)}
 }
 func NearbyDriversLatitudeFlag(latitude *float64) NearbyDriversOption {
 	return NearbyDriversOption{func(opts *nearbyDriversOptionImpl) {
@@ -34,14 +34,14 @@ func NearbyDriversLatitudeFlag(latitude *float64) NearbyDriversOption {
 		}
 		opts.has_latitude = true
 		opts.latitude = *latitude
-	}, fmt.Sprintf("api.NearbyDriversLatitude(float64 %+v)}", latitude)}
+	}, fmt.Sprintf("api.NearbyDriversLatitude(float64 %+v)", latitude)}
 }
 
 func NearbyDriversLongitude(longitude float64) NearbyDriversOption {
 	return NearbyDriversOption{func(opts *nearbyDriversOptionImpl) {
 		opts.has_longitude = true
 		opts.longitude = longitude
-	}, fmt.Sprintf("api.NearbyDriversLongitude(float64 %+v)}", longitude)}
+	}, fmt.Sprintf("api.NearbyDriversLongitude(float64 %+v)", longitude)}
 }
 func NearbyDriversLongitudeFlag(longitude *float64) NearbyDriversOption {
 	return NearbyDriversOption{func(opts *nearbyDriversOptionImpl) {
@@ -50,7 +50,7 @@ func NearbyDriversLongitudeFlag(longitude *float64) NearbyDriversOption {
 		}
 		opts.has_longitude = true
 		opts.longitude = *longitude
-	}, fmt.Sprintf("api.NearbyDriversLongitude(float64 %+v)}", longitude)}
+	}, fmt.Sprintf("api.NearbyDriversLongitude(float64 %+v)", longitude)}
 }
 
 type nearbyDriversOptionImpl struct {

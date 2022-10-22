@@ -1,0 +1,55 @@
+<script src="//azimi.me/json-formatter-js/dist/json-formatter.umd.js"></script>
+
+<script type="text/javascript" language="javascript"
+  src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript"
+  src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $('#tab').DataTable();
+  });
+</script>
+
+<table id="tab">
+  <tr>
+    <td>
+      <table class="table table-striped" lyft="uber">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Type</th>
+            <th>ID</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>JSON</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{- range .VehicleViews }}
+          <tr>
+            <td><img src="{{.ImageURL}}" alt="Image of {{.ID}}" width="50" height="50"></td>
+            <td>{{.Type}}</td>
+            <td>{{.ID}}</td>
+            <td>{{.Lat}}</td>
+            <td>{{.Lng}}</td>
+            <td id="json_{{.ID}}"></td>
+            <script>
+              {
+                try {
+                  const formatter = new JSONFormatter(JSON.parse('{{.JSON}}'), 0, {
+                    hoverPreviewEnabled: true,
+                  });
+                  document.getElementById("json_{{.ID}}").appendChild(formatter.render());
+                } catch (e) {
+                  console.log('while formatting: ' + e);
+                }
+              }
+            </script>
+          </tr>
+          {{- end }}
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>
