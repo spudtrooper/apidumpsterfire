@@ -38,6 +38,7 @@ func CreateHandlers(client *api.Client) []handler.Handler {
 			return client.Fares(p.LyftToken, p.UberCSID, p.UberSID, p.Options()...)
 		},
 		api.FaresParams{},
+		handler.NewHandlerRenderer(render.Fares),
 	)
 
 	return b.Build()

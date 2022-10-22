@@ -14,25 +14,69 @@
 <table id="tab">
   <tr>
     <td>
+      <h2>Uber</h2>
       <table class="table table-striped" lyft="uber">
         <thead>
           <tr>
-            <th>Image</th>
-            <th>Type</th>
             <th>ID</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Duration (m)</th>
+            <th>Fare</th>
+            <th>Multiplier</th>
             <th>JSON</th>
           </tr>
         </thead>
         <tbody>
-          {{- range .VehicleViews }}
+          {{- range .Uber }}
           <tr>
-            <td><img src="{{.ImageURL}}" alt="Image of {{.ID}}" width="50" height="50"></td>
-            <td>{{.Type}}</td>
             <td>{{.ID}}</td>
-            <td>{{.Lat}}</td>
-            <td>{{.Lng}}</td>
+            <td>{{.Type}}</td>
+            <td>{{.Description}}</td>
+            <td>{{.EstimatedMinutes}}m</td>
+            <td>{{.Fare}}</td>
+            <td>{{.Multiplier}}</td>
+            <td id="json_{{.ID}}"></td>
+            <script>
+              {
+                try {
+                  const formatter = new JSONFormatter(JSON.parse('{{.JSON}}'), 0, {
+                    hoverPreviewEnabled: true,
+                  });
+                  document.getElementById("json_{{.ID}}").appendChild(formatter.render());
+                } catch (e) {
+                  console.log('while formatting: ' + e);
+                }
+              }
+            </script>
+          </tr>
+          {{- end }}
+        </tbody>
+      </table>
+    </td>
+    <td>
+      <h2>Lyft</h2>
+      <table class="table table-striped" lyft="lyft">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Duration (m)</th>
+            <th>Fare</th>
+            <th>Multiplier</th>
+            <th>JSON</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{- range .Lyft }}
+          <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Type}}</td>
+            <td>{{.Description}}</td>
+            <td>{{.EstimatedMinutes}}m</td>
+            <td>{{.Fare}}</td>
+            <td>{{.Multiplier}}</td>
             <td id="json_{{.ID}}"></td>
             <script>
               {
