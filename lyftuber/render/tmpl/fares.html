@@ -9,6 +9,33 @@
   $(document).ready(function () {
     $('#tab').DataTable();
   });
+
+  function formatJSON(json, id) {
+    try {
+      // We need to escape any unescaped double quotes inside of strings.
+      let sanitizedJSON = json
+        // Convert all the quotes around attributes to single quotes and 
+        // escape all the double quotes.    
+        .replace(/"([^"]+)":/g, "'$1':")
+        .replace(/"\:/g, "':")
+        .replace(/\:"/g, ":'")
+        // Convert double quotes in string literals to single quotes.
+        .replace(/",/g, "',")
+        .replace(/"}/g, "'}")
+        // Remove all the double quotes.
+        .replace(/"/g, '')
+        // Replace all single quotes with double quotes.
+        .replace(/'/g, '"')
+        .replace(/"{/g, '{')
+        .replace(/}",/g, '},');
+      const formatter = new JSONFormatter(JSON.parse(sanitizedJSON), 0, {
+        hoverPreviewEnabled: true,
+      });
+      document.getElementById(id).appendChild(formatter.render());
+    } catch (e) {
+      console.log('while formatting: ' + e);
+    }
+  }
 </script>
 
 <table id="tab">
@@ -36,18 +63,9 @@
             <td>{{.EstimatedMinutes}}m</td>
             <td>{{.Fare}}</td>
             <td>{{.Multiplier}}</td>
-            <td id="json_{{.ID}}"></td>
+            <td><div id="uber_json_{{.ID}}"></div></td>
             <script>
-              {
-                try {
-                  const formatter = new JSONFormatter(JSON.parse('{{.JSON}}'), 0, {
-                    hoverPreviewEnabled: true,
-                  });
-                  document.getElementById("json_{{.ID}}").appendChild(formatter.render());
-                } catch (e) {
-                  console.log('while formatting: ' + e);
-                }
-              }
+              formatJSON('{{.JSON}}', "uber_json_{{.ID}}")
             </script>
           </tr>
           {{- end }}
@@ -77,18 +95,9 @@
             <td>{{.EstimatedMinutes}}m</td>
             <td>{{.Fare}}</td>
             <td>{{.Multiplier}}</td>
-            <td id="json_{{.ID}}"></td>
+            <td><div id="uber_json_{{.ID}}"></div></td>
             <script>
-              {
-                try {
-                  const formatter = new JSONFormatter(JSON.parse('{{.JSON}}'), 0, {
-                    hoverPreviewEnabled: true,
-                  });
-                  document.getElementById("json_{{.ID}}").appendChild(formatter.render());
-                } catch (e) {
-                  console.log('while formatting: ' + e);
-                }
-              }
+              formatJSON('{{.JSON}}', "lyft_json_{{.ID}}")
             </script>
           </tr>
           {{- end }}

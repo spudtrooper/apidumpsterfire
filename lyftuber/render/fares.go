@@ -31,7 +31,7 @@ func Fares(input any) ([]byte, handler.RendererConfig, error) {
 		Fare             string
 		EstimatedMinutes int
 		Multiplier       string
-		JSON             string
+		JSON             interface{}
 	}
 	var uberRows, lyftRows []row
 
@@ -51,7 +51,7 @@ func Fares(input any) ([]byte, handler.RendererConfig, error) {
 		jsonStr := string(jsonBytes)
 
 		uberRows = append(uberRows, row{
-			ID:               f.FareUUID,
+			ID:               f.ProductUUID,
 			Type:             typ,
 			Description:      "--",
 			Fare:             fmt.Sprintf("%s %s", f.Fare, f.CurrencyCode),
