@@ -13,23 +13,22 @@ It currently contains unofficial APIs from opentable and resy:
 | [resy.com](http://resy.com)               | [github.com/spudtrooper/resy](https://github.com/spudtrooper/resy)               |
 | [lyft.com](http://lyft.com)               | [github.com/spudtrooper/lyft](https://github.com/spudtrooper/lyft)               |
 | [uber.com](http://uber.com)               | [github.com/spudtrooper/uber](https://github.com/spudtrooper/uber)               |
+| [spotifydown.com](http://spotifydown.com)               | [github.com/spudtrooper/spotifydown](https://github.com/spudtrooper/spotifydown)               |
 
 ## Usage
 
-### Deployed frontend
-
-https://api-dumpster-fire.herokuapp.com/
+Used to be `https://api-dumpster-fire.herokuapp.com/`
 
 ### Running local front end
 
-```
-./scripts/frontend_local.sh
+```bash
+scripts/frontend_local.sh
 ```
 
 ### Deploy
 
 Will only work for me
 
-```
-./scripts/deploy.sh
+```bash
+scripts/deploy.sh
 ```
