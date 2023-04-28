@@ -2,6 +2,8 @@ module github.com/spudtrooper/apidumpsterfire
 
 go 1.18
 
+replace github.com/spudtrooper/spotifydown => ../spotifydown
+
 replace github.com/spudtrooper/minimalcli => ../minimalcli
 
 replace github.com/spudtrooper/resy => ../resy
@@ -23,6 +25,7 @@ require (
 	github.com/spudtrooper/opensecrets v0.0.0-00010101000000-000000000000
 	github.com/spudtrooper/opentable v0.0.0-00010101000000-000000000000
 	github.com/spudtrooper/resy v0.0.0-20221009133151-53830c432832
+	github.com/spudtrooper/spotifydown v0.0.0-20230424133540-65ce0248fb18
 	github.com/spudtrooper/uber v0.0.0-00010101000000-000000000000
 )
 

@@ -17,6 +17,8 @@ import (
 	opentablehandlers "github.com/spudtrooper/opentable/handlers"
 	resyapi "github.com/spudtrooper/resy/api"
 	resyhandlers "github.com/spudtrooper/resy/handlers"
+	spotifydownapi "github.com/spudtrooper/spotifydown/api"
+	spotifydownhandlers "github.com/spudtrooper/spotifydown/handlers"
 	uberapi "github.com/spudtrooper/uber/api"
 	uberhandlers "github.com/spudtrooper/uber/handlers"
 )
@@ -28,6 +30,7 @@ func ListenAndServe(ctx context.Context,
 	lyftClient *lyftapi.Client,
 	uberClient *uberapi.Client,
 	lyftuberClient *lyftuberapi.Client,
+	spotifydownClient *spotifydownapi.Client,
 	port int, host string) error {
 	var hostPort string
 	if host == "localhost" {
@@ -130,6 +133,22 @@ func ListenAndServe(ctx context.Context,
 			handler.AddSectionFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/uber">github.com/spudtrooper/uber</a>`),
 			handler.AddSectionSourceLinks(true),
 			handler.AddSectionSerializedSourceLocations(uberhandlers.SourceLocations),
+		)
+		if err != nil {
+			return err
+		}
+		secs = append(secs, *sec)
+	}
+
+	{
+		sec, err := handler.AddSection(ctx, mux,
+			spotifydownhandlers.CreateHandlers(spotifydownClient),
+			"spotifydown",
+			"unofficial spotifydown API",
+			handler.AddSectionKey("uber"),
+			handler.AddSectionFooterHTML(`Details: <a target="_" href="//github.com/spudtrooper/spotifydown">github.com/spudtrooper/spotifydown</a>`),
+			handler.AddSectionSourceLinks(true),
+			handler.AddSectionSerializedSourceLocations(spotifydownhandlers.SourceLocations),
 		)
 		if err != nil {
 			return err

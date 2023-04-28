@@ -15,6 +15,7 @@ import (
 	opensecretsapi "github.com/spudtrooper/opensecrets/api"
 	opentableapi "github.com/spudtrooper/opentable/api"
 	resyapi "github.com/spudtrooper/resy/api"
+	spotifydownapi "github.com/spudtrooper/spotifydown/api"
 	uberapi "github.com/spudtrooper/uber/api"
 )
 
@@ -49,8 +50,9 @@ func main() {
 	lyft := lyftapi.NewClient("")
 	uber := uberapi.NewClient("", "")
 	lyftuber := lyftuberapi.NewClient(lyft, uber)
+	spotifydown := spotifydownapi.NewClient()
 
 	check.Err(frontend.ListenAndServe(ctx,
-		resy, opentable, opensecrets, lyft, uber, lyftuber,
+		resy, opentable, opensecrets, lyft, uber, lyftuber, spotifydown,
 		port, *host))
 }
